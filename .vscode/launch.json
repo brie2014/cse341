@@ -5,6 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch CSE 341 Project",
+            "program": "${workspaceFolder}\\cse341-project\\app.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+
+
+
+        {
             "type": "pwa-node",
             "request": "launch",
             "name": "Launch Program",

@@ -41,7 +41,7 @@ const requestHandler = (req, res) => {
 
 module.exports = {
     handler: requestHandler,
-    someText: "Some very cool text"
+    someText: "Some very cool hardcoded text"
 };
 
 // module.exports.handler = requestHandler
