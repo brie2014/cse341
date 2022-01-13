@@ -1,7 +1,26 @@
-const http = require('http');
-const routes = require('./routes')
- console.log(routes.someText)
+const path = require('path')
+const express = require('express')
+const bodyParser = require('body-parser')
 
-const server = http.createServer(routes.handler);
 
-server.listen(3000);
+const app = express()
+
+// Use ejs templating
+app.set('view engine', 'ejs')
+
+app.set('views', 'views')
+
+const adminData = (require('./routes/admin'))
+const shopRoutes = (require('./routes/shop'))
+
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use('/admin', adminData.routes)
+app.use(shopRoutes)
+
+app.use((req, res, next) => {
+    res.render('404', {pageTitle: 'No Page Found'})
+})
+
+app.listen(3000)

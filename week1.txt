@@ -1,0 +1,4 @@
+The TA said to just submit our code for the week and to look for a txt file template in the future. Let me know if I am missing anything.
+My code that I followed along with is in the nodeJS-project folder. 
+
+https://github.com/brie2014/cse341
