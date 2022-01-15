@@ -41,3 +41,24 @@
   width: 5rem;
   height: 5rem;
 }
+
+.adminButtonContainer a {
+  background-color: thistle;
+  padding: 6px;
+  margin: 6px;
+  border-radius: 3px;
+}
+
+.userList {
+  list-style: none;
+  padding: 24px;
+  font-size: 24px;
+}
+
+form input {
+  color: black;
+}
+
+form button {
+  background-color: rgba(0, 0, 0, 0.527);
+}

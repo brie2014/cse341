@@ -12,19 +12,20 @@
         <h1>
           <%= title %>
         </h1>
+        <div class="adminButtonContainer">
+          <a href="/ta02/addUser">Add User</a>
+          <a href="/ta02/removeUser">Remove User</a>
+        </div>
         <% if (users.length > 0) { %>
-        <ul class="grid">
+          <ul class="userList">
             <% for (let user of users) { %>
             <li><%= user %> </li>
             <% } %>
-            </ul>
+          </ul>
     <% } else { %>
-        <h1>No Users Found</h1>
+        <p>No Users Found</p>
     <% } %>
       </div>
-    </div>
-    <div class="container">
-
     </div>
 
 
