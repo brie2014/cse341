@@ -12,7 +12,40 @@
         <h1>
           <%= title %>
         </h1>
-        <p>This is the placeholder for Team Activity 03</p>
+        <form action="/ta03" method="POST">
+          <input type="text" id="keyword" name="keyword">
+          <button type="submit">Search</button>
+        </form>
+        <p>Showing <%=items.length %> results</p>
+        <% if (items.length > 0) { %>
+          <div class="grid">
+              <% for (let item of items) { %>
+                  <article class="card product-item">
+                      <header class="card__header">
+                          <h1 class="product__title">
+                              <%= item.name %>
+                          </h1>
+                      </header>
+                      <div class="card__image">
+                          <img src="<%= item.imageUrl %>" alt="<%= item.name %>">
+                      </div>
+                      <div class="card__content">
+                          <h2 class="product__price">$
+                              <%= item.price %>
+                          </h2>
+                          <p class="product__description">
+                              <%= item.description %>
+                          </p>
+                      </div>
+                      <div>
+                         <p>This is part of the group(s) <%= item.tag %></p>
+                      </div>
+                  </article>
+                  <% } %>
+          </div>
+          <% } else { %>
+              <h1>No Products Found!</h1>
+              <% } %>
       </div>
     </div>
     <div class="container">

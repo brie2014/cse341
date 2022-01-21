@@ -1,0 +1,29 @@
+.cart-container {
+    width: 50%;
+}
+
+.cart-list {
+    text-decoration: none;
+    list-style: none;
+    margin: 0;
+
+    padding: 1rem;
+
+}
+.cart-list li, .cart-list p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-list li {
+    border-bottom: black 2px solid;
+}
+
+.total {
+    margin: 0;
+    padding: 1rem;
+    background-color: rgb(243, 242, 241);
+    text-align: right;
+    font-weight: bold;
+}

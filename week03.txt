@@ -1,0 +1,35 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://cse-341.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/brie2014/cse341
+
+3. Briefly list and describe the elements of the application that are functioning. 
+-You can edit and delete products from the shop
+-You can add and delete prodcuts from your cart
+-When a product is deleted, it also deletes from the cart
+-When products are edited, it updates products in the cart
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+It is all working correctly.
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing I learned was getting a better understanding of the MVC architecture. 
+I've been exposed to it several times, but the videos explained it in a way that made a lot more sense on what logic goes where.
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+Please add the link for the txt file template to the assignments in iLearn. 
+
+7. Please select the category you feel best describes your assignment: 5
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+I followed along with all the video tutorials, completed those assignments in full, used multiple dynamic routes, 
+added subtotal and total elements on my cart page, and added additional styling for the cart page to make it look more professional.
