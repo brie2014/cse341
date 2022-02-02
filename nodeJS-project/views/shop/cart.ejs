@@ -7,23 +7,30 @@
     <main>
         <div class="cart-container">
             <% if (products.length > 0) { %>
-                <h1>My Cart</h1>
+            <h1>My Cart</h1>
             <ul class="cart-list">
                 <% products.forEach((p) => { %>
                 <li>
                     <form action="/cart-delete-item" method="POST">
-                        <input type="hidden" name="productId" value="<%= p.productData.id %>">
+                        <input type="hidden" name="productId" value="<%= p.productId._id %>">
                         <button class="btn" type="submit">Delete</button>
                     </form>
-                    <p><%= p.productData.title %></p>
-                    <p>(<%= p.qty %>) x $<%= p.productData.price %> </p>
-                    <p class="product__price">$
-                        <%= p.subtotal %>
+                    <p><%= p.productId.title %></p>
+                    <p>(<%= p.quantity %>) x $<%= p.productId.price %> </p>
+                    <p class="product__price">
+                        $<%= p.itemSubtotal %>
                     </p>
                 </li>
                 <% }) %>
             </ul>
-            <p class="total">Total Price: $ <%= totalPrice %></p>
+            <p>Total: $<%=totalPrice %></p>
+            <hr>
+            <div class="centered">
+                <form action="/create-order" method="POST">
+                    <button type="submit" class="btn">Order Now!</button>
+                </form>
+            </div>
+
             <% } else { %>
             <h1>No Products in Cart</h1>
             <% } %>

@@ -22,7 +22,7 @@ const getItemsFromFile = cb => {
 };
 
 router.get('/', (req, res, next) => {
-  getItemsFromFile( items => {
+  getItemsFromFile(items => {
     res.render('pages/ta03', {
       title: 'Team Activity 03',
       path: '/ta03', // For pug, EJS
@@ -33,7 +33,7 @@ router.get('/', (req, res, next) => {
 
 router.post('/', (req, res, next) => {
   const keyword = req.body.keyword
-  getItemsFromFile( items => {
+  getItemsFromFile(items => {
     const filteredItems = []
     items.forEach((item) => {
       let lcTags = []
@@ -41,8 +41,7 @@ router.post('/', (req, res, next) => {
         let lcTag = tag.toLowerCase()
         lcTags.push(lcTag)
       })
-      console.log(lcTags)
-      if(lcTags.includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase())) {
+      if (lcTags.includes(keyword.toLowerCase()) || item.name.toLowerCase().includes(keyword.toLowerCase())) {
         filteredItems.push(item)
       }
     })
