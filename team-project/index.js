@@ -12,6 +12,7 @@
  *******************************************************************************/
 // Our initial setup (package requires, port number setup)
 const express = require('express');
+const session = require('express-session')
 const bodyParser = require('body-parser');
 const path = require('path');
 const PORT = process.env.PORT || 3000; // So we can run on heroku || (OR) localhost:5000
@@ -23,21 +24,25 @@ const ta01Routes = require('./routes/ta01');
 const ta02Data = require('./routes/ta02');
 const ta03Routes = require('./routes/ta03');
 const ta04Routes = require('./routes/ta04');
+const ta05Routes = require('./routes/ta05');
 
 app
   .use(express.static(path.join(__dirname, 'public')))
+  .use(session({
+    secret: 'my secret',
+    resave: false,
+    saveUninitialized: false,
+  }))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
-  // For view engine as Pug
-  //.set('view engine', 'pug') // For view engine as PUG.
-  // For view engine as hbs (Handlebars)
-  //.engine('hbs', expressHbs({layoutsDir: 'views/layouts/', defaultLayout: 'main-layout', extname: 'hbs'})) // For handlebars
-  //.set('view engine', 'hbs')
-  .use(bodyParser({ extended: false })) // For parsing the body of a POST
+  .use(bodyParser({
+    extended: false
+  })) // For parsing the body of a POST
   .use('/ta01', ta01Routes)
   .use('/ta02', ta02Data.routes)
   .use('/ta03', ta03Routes)
   .use('/ta04', ta04Routes)
+  .use('/ta05', ta05Routes)
   .get('/', (req, res, next) => {
     // This is the primary index, always handled last.
     res.render('pages/index', {
@@ -47,6 +52,9 @@ app
   })
   .use((req, res, next) => {
     // 404 page
-    res.render('pages/404', { title: '404 - Page Not Found', path: req.url });
+    res.render('pages/404', {
+      title: '404 - Page Not Found',
+      path: req.url
+    });
   })
   .listen(PORT, () => console.log(`Listening on ${PORT}`));

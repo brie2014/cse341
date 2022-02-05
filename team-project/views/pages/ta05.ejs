@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include ../includes/header.ejs %>
+</head>
+
+<body>
+    <% include ../includes/nav.ejs %>
+    <div class="jumbotron text-center" style="background-color:<%= color %>;">
+        <div class="container">
+            <h1>
+                <%= title %>
+            </h1>
+            <form action="/ta05/counter" method="POST">
+                <input type="hidden" name="counterCommand" value="increment">
+                <button type="submit">Increment</button>
+            </form>
+            <form action="/ta05/counter" method="POST">
+                <input type="hidden" value="decrement" name="counterCommand">
+                <button type="submit">Decrement</button>
+            </form>
+            <p>Your counter value is <%= counterValue%></p>
+
+            <form action="/ta05/change-style" method="POST">
+                <select name="color" id="clr">
+                    <option value="choose" disabled selected></option>
+                    <option value="red">RED</option>
+                    <option value="blue">BLUE</option>
+                    <option value="green">GREE</option>
+                    <option value="yellow">YELLOW</option>
+                    <option value="orange">ORANGE</option>
+                </select>
+                <button type="submit">Change Color</button>
+            </form>
+            <form action="/ta05/reset" method="POST">
+                <p>Do you wish to kill the session?</p>
+                <button type="submit">Assassinate Session</button>
+            </form>
+        </div>
+</body>
+
+</html>

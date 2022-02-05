@@ -217,3 +217,35 @@ form {
 .img-container img {
   width: 100%;
 }
+
+.user-message {
+  margin: auto;
+  width: 90%;
+  padding: 1rem;
+  border-radius: 3px;
+  border: 1px solid rgb(28, 28, 180);
+  background-color: rgb(204, 204, 241);
+  text-align: center;
+}
+
+.user-message--error {
+  border-color: red;
+  background-color: rgb(233, 193, 193);
+
+}
+
+
+
+@media(min-width: 768px) {
+  .main-header__nav {
+    display: flex;
+  }
+
+  #side-menu-toggle {
+    display: none;
+  }
+
+  .user-message {
+    width: 30rem
+  }
+}

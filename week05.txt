@@ -1,0 +1,36 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://cse341-node-js.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/brie2014/cse341
+
+3. Briefly list and describe the elements of the application that are functioning.
+-Users can create accounts
+-Users can login 
+-Views change upon login
+-Error messages are shown with authentication errors
+-Routes are protected with csrf tokens
+
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+It is all working correctly.
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing I learned was how to protect the views with the CSRF token. 
+I didn't know how that was done previously and it is definitely a useful thing to know how to do.
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+More explanation on how to use nodemailer. Also, please add the link for the txt file template to the assignments in iLearn. 
+
+7. Please select the category you feel best describes your assignment: 5
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+I followed along with all the video tutorials and completed those assignments in full, including protecting my routes and adding registration and login functionality.. I also added a name field to the signup page, model, and route. Additionally, I added more error messages, such as when the password and confirm password don't match.
