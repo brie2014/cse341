@@ -1,25 +1,50 @@
-const bcrypt = require('bcryptjs')
-const nodemailer = require('nodemailer')
-const sendgridTransport = require('nodemailer-sendgrid-transport')
-const User = require('../models/user')
+const crypto = require('crypto')
 
-const transporter = nodemailer.createTransport(sendgridTransport({
-    auth: {
-        api_key: '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'
-    }
-}))
+const bcrypt = require('bcryptjs')
+// const nodemailer = require('nodemailer')
+// const sendgridTransport = require('nodemailer-sendgrid-transport')
+const {
+    validationResult
+} = require('express-validator/check')
+const User = require('../models/user')
+const {
+    isNullOrUndefined
+} = require('util')
+
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+
+
+// const transporter = nodemailer.createTransport(sendgridTransport({
+//     auth: {
+//         api_key: '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'
+//     }
+// }))
 
 exports.getLogin = (req, res, next) => {
-    let message = req.flash('error')
-    if (message.length > 0) {
-        message = message[0]
+    let errorMessage = req.flash('error')
+    if (errorMessage.length > 0) {
+        errorMessage = errorMessage[0]
     } else {
-        message = null
+        errorMessage = null
+    }
+    let userMessage = req.flash('user-message')
+    if (userMessage.length > 0) {
+        userMessage = userMessage[0]
+    } else {
+        userMessage = null
     }
     res.render('auth/login', {
         pageTitle: 'Login',
         path: '/login',
-        errorMessage: message
+        errorMessage: errorMessage,
+        userMessage: userMessage,
+        oldInput: {
+            email: '',
+            password: '',
+        },
+        validationErrors: []
     })
 
 }
@@ -27,13 +52,36 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    const errors = validationResult(req)
+    if (!errors.isEmpty) {
+        return res.status(422).render('auth/login', {
+            pageTitle: 'Login',
+            path: '/login',
+            errorMessage: errors.array()[0].msg,
+            userMessage: userMessage,
+            oldInput: {
+                email: email,
+                password: password,
+            },
+            validationErrors: errors.array()
+        })
+    }
     User.findOne({
             email: email
         })
         .then(user => {
             if (!user) {
-                req.flash('error', 'Invalid email or password.')
-                return res.redirect('/login');
+                return res.status(422).render('auth/login', {
+                    pageTitle: 'Login',
+                    path: '/login',
+                    errorMessage: 'Invalid email or password.',
+                    userMessage: userMessage,
+                    oldInput: {
+                        email: email,
+                        password: password,
+                    },
+                    validationErrors: []
+                })
             }
             bcrypt
                 .compare(password, user.password)
@@ -46,8 +94,17 @@ exports.postLogin = (req, res, next) => {
                             res.redirect('/');
                         });
                     }
-                    req.flash('error', 'Invalid email or password.')
-                    res.redirect('/login');
+                    return res.status(422).render('auth/login', {
+                        pageTitle: 'Login',
+                        path: '/login',
+                        errorMessage: 'Invalid email or password.',
+                        userMessage: userMessage,
+                        oldInput: {
+                            email: email,
+                            password: password,
+                        },
+                        validationErrors: []
+                    })
                 })
                 .catch(err => {
                     console.log(err);
@@ -55,10 +112,14 @@ exports.postLogin = (req, res, next) => {
                     res.redirect('/login');
                 });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        });
 };
 
-exports.postLogout = (req, res, next) => {
+exports.getLogout = (req, res, next) => {
     req.session.destroy((err) => {
         console.log(err)
         res.redirect('/')
@@ -66,16 +127,30 @@ exports.postLogout = (req, res, next) => {
 }
 
 exports.getSignup = (req, res, next) => {
-    let message = req.flash('error')
-    if (message.length > 0) {
-        message = message[0]
+    let errorMessage = req.flash('error')
+    if (errorMessage.length > 0) {
+        errorMessage = errorMessage[0]
     } else {
-        message = null
+        errorMessage = null
+    }
+    let userMessage = req.flash('user-message')
+    if (userMessage.length > 0) {
+        userMessage = userMessage[0]
+    } else {
+        userMessage = null
     }
     res.render('auth/signup', {
-        pageTitle: 'SignUp',
+        pageTitle: 'Signup',
         path: '/signup',
-        errorMessage: message
+        errorMessage: errorMessage,
+        userMessage: userMessage,
+        oldInput: {
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
+        },
+        validationErrors: []
     })
 
 }
@@ -84,45 +159,182 @@ exports.postSignup = (req, res, next) => {
     const name = req.body.name
     const email = req.body.email
     const password = req.body.password
-    const confirmPassword = req.body.confirmPassword
-    if (password !== confirmPassword) {
-        req.flash('error', 'Passwords do not match')
-        return res.redirect('/signup')
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422).render('auth/signup', {
+            pageTitle: 'Signup',
+            path: '/signup',
+            errorMessage: errors.array()[0].msg,
+            oldInput: {
+                name: name,
+                email: email,
+                password: password,
+                confirmPassword: req.body.confirmPassword
+            },
+            validationErrors: errors.array()
+        })
     }
-    User.findOne({
-            email: email
-        }).then(userDoc => {
-            if (userDoc) {
-                req.flash('error', 'This email is already registered. Please login or use a different email.')
-                return res.redirect('/signup')
-            }
-            return bcrypt
-                .hash(password, 12)
-                .then(hashedPassword => {
-                    const user = new User({
-                        name: name,
-                        email: email,
-                        password: hashedPassword,
-                        cart: {
-                            items: [],
-                            totalPrice: 0
-                        }
+    bcrypt
+        .hash(password, 12)
+        .then(hashedPassword => {
+            const user = new User({
+                name: name,
+                email: email,
+                password: hashedPassword,
+                cart: {
+                    items: [],
+                    totalPrice: 0
+                }
 
-                    })
-                    return user.save()
-                })
-                .then(result => {
-                    res.redirect('/login')
-                    return transporter.sendMail({
-                        to: email,
-                        from: 'shop@node-complete.com',
-                        html: '<h1>You successfully signed up!</h1>',
-                    })
-
-                })
+            })
+            return user.save()
         })
+        .then(result => {
+            req.flash('user-message', 'Thanks for signing up. Please log in.')
+            res.redirect('/login')
+            return sgMail.sendMail({
+                to: email,
+                from: 'shop@node-complete.com',
+                html: '<h1>You successfully signed up!</h1>',
+            })
 
+        })
         .catch(err => {
-            console.log(err)
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
         })
+}
+
+exports.getReset = (req, res, next) => {
+    let errorMessage = req.flash('error')
+    if (errorMessage.length > 0) {
+        errorMessage = errorMessage[0]
+    } else {
+        errorMessage = null
+    }
+    let userMessage = req.flash('user-message')
+    if (userMessage.length > 0) {
+        userMessage = userMessage[0]
+    } else {
+        userMessage = null
+    }
+    res.render('auth/reset', {
+        pageTitle: 'Reset Password',
+        path: '/reset',
+        errorMessage: errorMessage,
+        userMessage: userMessage
+    })
+}
+
+exports.postReset = (req, res, next) => {
+    crypto.randomBytes(32, (err, buffer) => {
+        if (err) {
+            console.log(err)
+            req.flash('error', 'Could not reset password. Please try again.')
+            return res.redirect('/reset')
+        }
+        const token = buffer.toString('hex')
+        User.findOne({
+                email: req.body.email
+            }).then(user => {
+                if (!user) {
+                    req.flash('error', 'No account with that email found.')
+                    return res.redirect('/reset')
+                }
+                user.resetToken = token
+                user.resetTokenExpiration = Date.now() + 3600000
+                return user.save()
+            })
+            .then(result => {
+                res.redirect('/')
+                sgMail.sendMail({
+                    to: req.body.email,
+                    from: 'shop@node-complete.com',
+                    subject: 'Password Reset',
+                    html: `
+                <p>You requested a password reset.</p>
+                <p>Click this <a href="http://localhost:5000/link/reset/${token}>link</a> to set a new password.</p>
+                `,
+                })
+            })
+            .catch(err => {
+                const error = new Error(err)
+                error.httpStatusCode = 500
+                return next(error)
+            })
+    })
+
+}
+
+exports.getNewPassword = (req, res, next) => {
+    const token = req.params.token
+    User.findOne({
+            resetToken: token,
+            resetTokenExpiration: {
+                $gt: Date.now()
+            }
+        })
+        .then(user => {
+            let errorMessage = req.flash('error')
+            if (errorMessage.length > 0) {
+                errorMessage = errorMessage[0]
+            } else {
+                errorMessage = null
+            }
+            let userMessage = req.flash('user-message')
+            if (userMessage.length > 0) {
+                userMessage = userMessage[0]
+            } else {
+                userMessage = null
+            }
+            res.render('auth/new-password', {
+                pageTitle: 'New Password',
+                path: '/new-password',
+                errorMessage: errorMessage,
+                userMessage: userMessage,
+                userId: user._id.toString(),
+                passwordToken: token,
+            })
+        })
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
+}
+
+exports.postNewPassword = (req, res, next) => {
+    const newPassword = req.body.password
+    const userId = req.body.userId
+    const passwordToken = req.body.passwordToken
+    let resetUser
+
+    User.findOne({
+            resetToken: passwordToken,
+            resetTokenExpiration: {
+                $gt: Date.now()
+            },
+            _id: userId
+        })
+        .then(user => {
+            resetUser = user
+            return bcrypt.hash(newPassword, 12)
+        })
+        .then(hashedPassword => {
+            resetUser.password = hashedPassword
+            resetUser.resetToken = undefined
+            resetUser.resetTokenExpiration = undefined
+            return resetUser.save()
+        })
+        .then(result => {
+            req.flash('user-message', 'Password has been reset. Please login.')
+            res.redirect('/login')
+        })
+        .catch(err => {
+            const error = new Error(err)
+            error.httpStatusCode = 500
+            return next(error)
+        })
+
 }

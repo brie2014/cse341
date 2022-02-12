@@ -52,7 +52,11 @@ exports.getCart = (req, res, next) => {
         totalPrice: user.cart.totalPrice.toFixed(2),
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.postCart = (req, res, next) => {
@@ -105,7 +109,11 @@ exports.postOrder = (req, res, next) => {
     .then(result => {
       res.redirect('/orders')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getOrders = (req, res, next) => {

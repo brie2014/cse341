@@ -52,7 +52,8 @@ form {
   padding: 0;
 }
 
-.main-header__item a {
+.main-header__item a,
+.main-header__item form button {
   text-decoration: none;
   color: white;
 }

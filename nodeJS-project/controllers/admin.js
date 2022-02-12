@@ -1,3 +1,9 @@
+const mongoose = require('mongoose')
+
+const {
+  validationResult
+} = require('express-validator/check')
+
 const Product = require('../models/product')
 
 exports.getAddProduct = (req, res, next) => {
@@ -8,7 +14,9 @@ exports.getAddProduct = (req, res, next) => {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
     editing: false,
-    isAuthenticated: req.session.isLoggedIn,
+    hasError: false,
+    errorMessage: null,
+    validationErrors: [],
   })
 }
 
@@ -17,7 +25,28 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl
   const description = req.body.description
   const price = req.body.price
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty) {
+    console.log(errors.array())
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/add-product',
+      editing: false,
+      hasError: true,
+      product: {
+        title: title,
+        imageUrl: imageUrl,
+        price: price,
+        description: description
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
+    })
+  }
+
   const product = new Product({
+    // _id: new mongoose.Types.ObjectId('61f5d300a579f0092b35575e'),
     title: title,
     imageUrl: imageUrl,
     description: description,
@@ -28,7 +57,11 @@ exports.postAddProduct = (req, res, next) => {
     .then(result => {
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 
 }
 
@@ -48,10 +81,17 @@ exports.getEditProduct = (req, res, next) => {
         path: '/admin/edit-product',
         editing: editMode,
         product: product,
+        hasError: false,
+        errorMessage: null,
+        validationErrors: [],
       })
 
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 
 }
 
@@ -61,33 +101,73 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price
   const updatedImageUrl = req.body.imageUrl
   const updatedDesc = req.body.description
+  const errors = validationResult(req)
+  console.log(errors.array())
+  if (!errors.isEmpty) {
+    console.log(errors.array())
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      product: {
+        title: updatedTitle,
+        imageUrl: updatedImageUrl,
+        price: updatedPrice,
+        description: updatedDesc,
+        _id: productId,
+      },
+      errorMessage: errors.array()[0].msg,
+      validationErrors: errors.array(),
+    })
+  }
 
-  Product.findById(productId).then(product => {
+  Product.findById(productId)
+    .then(product => {
+      // throw new Error('Dummy')
+      if (product.userId.toString() !== req.user._id.toString()) {
+        return res.redirect('/')
+      }
       product.title = updatedTitle
       product.price = updatedPrice
       product.imageUrl = updatedImageUrl
       product.description = updatedDesc
-      return product.save()
+      return product
+        .save()
+        .then(result => {
+          res.redirect('/admin/products')
+        })
     })
-    .then(result => {
-      res.redirect('/admin/products')
+
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
     })
-    .catch(err => console.log(err))
 
 }
 
 exports.postDeleteProduct = (req, res, next) => {
   const productId = req.params.productId
-  Product.findByIdAndRemove(productId)
+  Product.deleteOne({
+      _id: productId,
+      userId: req.user._id
+    })
     .then(() => {
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 
 }
 
 exports.getProducts = (req, res, next) => {
-  Product.find()
+  Product.find({
+      userId: req.user._id
+    })
     // .select('title price -_id')
     // .populate('userId', 'name')
     .then(products => {
@@ -98,6 +178,10 @@ exports.getProducts = (req, res, next) => {
       })
 
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 
 }
