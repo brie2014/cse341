@@ -1,0 +1,34 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://cse341-node-js.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/brie2014/cse341
+
+3. Briefly list and describe the elements of the application that are functioning.
+-Errors are handled gracefully
+-500 error page added
+-Validation for form fields with POST requests are validated using express-validator
+-Validation styling added to indicate which fields are invalid
+
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+The only thing not working correctly is the SendGrid emailer. I tried a few different things and could not get it to actually send out the email. My account also got deactivated due to exposing the API key, so I had to fix that.
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing I learned was how to handle the form validation so we rerender the page with styling that indicates the specific errors. This creates a much better user experience. 
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+More explanation on how to use nodemailer/sendgrid. Also, please add the link for the txt file template to the assignments in iLearn. 
+
+7. Please select the category you feel best describes your assignment: 5
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+I followed along with all the video tutorials and completed those assignments in full, including adding server-side validation and error handling. I also made sure the pages looked professional and that error messages were clear to the user to help them have a good user experience.
