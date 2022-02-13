@@ -2,13 +2,12 @@ const crypto = require('crypto')
 
 const bcrypt = require('bcryptjs')
 
+
 const {
     validationResult
-} = require('express-validator/check')
+} = require('express-validator')
+
 const User = require('../models/user')
-const {
-    isNullOrUndefined
-} = require('util')
 
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
@@ -45,12 +44,13 @@ exports.postLogin = (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
     const errors = validationResult(req)
-    if (!errors.isEmpty) {
+    console.log(errors.array())
+    if (!errors.isEmpty()) {
         return res.status(422).render('auth/login', {
             pageTitle: 'Login',
             path: '/login',
             errorMessage: errors.array()[0].msg,
-            userMessage: userMessage,
+            userMessage: '',
             oldInput: {
                 email: email,
                 password: password,
@@ -66,8 +66,8 @@ exports.postLogin = (req, res, next) => {
                 return res.status(422).render('auth/login', {
                     pageTitle: 'Login',
                     path: '/login',
-                    errorMessage: 'Invalid email or password.',
-                    userMessage: userMessage,
+                    errorMessage: 'Invalid email.',
+                    userMessage: '',
                     oldInput: {
                         email: email,
                         password: password,
@@ -89,8 +89,8 @@ exports.postLogin = (req, res, next) => {
                     return res.status(422).render('auth/login', {
                         pageTitle: 'Login',
                         path: '/login',
-                        errorMessage: 'Invalid email or password.',
-                        userMessage: userMessage,
+                        errorMessage: 'Invalid password.',
+                        userMessage: '',
                         oldInput: {
                             email: email,
                             password: password,

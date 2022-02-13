@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const {
   validationResult
-} = require('express-validator/check')
+} = require('express-validator')
 
 const Product = require('../models/product')
 
@@ -27,7 +27,7 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price
   const errors = validationResult(req)
 
-  if (!errors.isEmpty) {
+  if (!errors.isEmpty()) {
     console.log(errors.array())
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
@@ -46,7 +46,6 @@ exports.postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
-    // _id: new mongoose.Types.ObjectId('61f5d300a579f0092b35575e'),
     title: title,
     imageUrl: imageUrl,
     description: description,
@@ -103,7 +102,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedDesc = req.body.description
   const errors = validationResult(req)
   console.log(errors.array())
-  if (!errors.isEmpty) {
+  if (!errors.isEmpty()) {
     console.log(errors.array())
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Edit Product',
