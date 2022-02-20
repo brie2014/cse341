@@ -28,7 +28,12 @@ router.get('/logout', authController.getLogout)
 
 router.get('/signup', authController.getSignup)
 router.post('/signup',
-    [
+    [body('name', 'Please enter your name.')
+        .isLength({
+            min: 5
+        })
+        .isString()
+        .trim(),
         check('email')
         .isEmail()
         .withMessage('Please enter a valid email.')

@@ -180,6 +180,7 @@ exports.postSignup = (req, res, next) => {
 
             })
             return user.save()
+
         })
         .then(result => {
             req.flash('user-message', 'Thanks for signing up. Please log in.')
@@ -192,7 +193,13 @@ exports.postSignup = (req, res, next) => {
 
         })
         .catch(err => {
+            console.error(err)
             const error = new Error(err)
+            if (err.code == 11000) {
+                req.flash('error', 'A user has already registered with that email.');
+                res.redirect('/signup');
+                return;
+            }
             error.httpStatusCode = 500
             return next(error)
         })
@@ -239,7 +246,8 @@ exports.postReset = (req, res, next) => {
                 return user.save()
             })
             .then(result => {
-                res.redirect('/')
+                req.flash('user-message', `Password change request received. Please enter a new password.`)
+                res.redirect(`/reset/${token}`)
                 sgMail.sendMail({
                     to: req.body.email,
                     from: 'shop@node-complete.com',

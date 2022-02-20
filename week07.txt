@@ -1,0 +1,39 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+https://cse341-node-js.herokuapp.com/
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+https://github.com/brie2014/cse341
+
+3. Briefly list and describe the elements of the application that are functioning.
+-Errors are handled gracefully
+-500/404 error pages unique and functional
+-Validation for form fields with POST requests are validated using express-validator
+-Validation styling added to indicate which fields are invalid
+-Personalized styling and organized well
+-Users can create, edit, and delete items from the shop
+-Users can add and remove items from their cart, and place orders
+-Users can browse all items that have been added to the shop
+-Code is organized in MVC pattern and uses routing and middleware
+-Users have the ability to login, signup, and reset their password
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+The only thing not working correctly is the SendGrid emailer. I tried a few different things and could not get it to actually send out the email. I did a workaround to allow users to reset their password, but it is not very secure. 
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing I learned with this project was how to use routing and middleware to direct users on an app. It is interesting how much functionality is done by something users never see.
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+More explanation on how to use nodemailer/sendgrid. Also, please add the link for the txt file template to the assignments in iLearn. 
+
+7. Please select the category you feel best describes your assignment: 5
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+I followed along with all the video tutorials and completed those assignments in full, including all required functionality and adding server-side validation and error handling. I also made sure the pages looked professional and added additional styling as needed. My code is organized well, uses dynamic routing and middleware, and follows the MVC pattern. Users can create, edit, and delete items, add and delete items from their cart, submit orders, and view all items that all users have added to the store/ Additionally, since sendgrid was not working, I made a different way (less secure, but it works) to allow users to reset their passwords. I also validate each field and made sure that error messages were unique so they are clear to the user. This will help them have a good user experience.
