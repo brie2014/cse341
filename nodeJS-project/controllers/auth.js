@@ -247,16 +247,16 @@ exports.postReset = (req, res, next) => {
             })
             .then(result => {
                 req.flash('user-message', `Password change request received. Please enter a new password.`)
-                res.redirect(`/reset/${token}`)
-                sgMail.sendMail({
-                    to: req.body.email,
-                    from: 'shop@node-complete.com',
-                    subject: 'Password Reset',
-                    html: `
-                <p>You requested a password reset.</p>
-                <p>Click this <a href="http://localhost:5000/link/reset/${token}>link</a> to set a new password.</p>
-                `,
-                })
+                return res.redirect(`/reset/${token}`)
+                //  sgMail.sendMail({
+                //     to: req.body.email,
+                //     from: 'shop@node-complete.com',
+                //     subject: 'Password Reset',
+                //     html: `
+                // <p>You requested a password reset.</p>
+                // <p>Click this <a href="http://localhost:5000/link/reset/${token}>link</a> to set a new password.</p>
+                // `,
+                // })
             })
             .catch(err => {
                 const error = new Error(err)
