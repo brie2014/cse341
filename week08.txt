@@ -6,7 +6,7 @@ N/A
 
 2. Copy and paste the URL for your source code repository (e.g., GitHub):
 Professional Backend API: https://github.com/brie2014/professional-api
-Main: https://github.com/brie2014/cse341
+Main Repository: https://github.com/brie2014/cse341
 
 3. Briefly list and describe the elements of the application that are functioning.
 -REST API created using routes and controllers to allow for more complexity if needed
@@ -30,4 +30,4 @@ This assignment was a great way to apply our learnings for the week. My only com
    5 - Shows creativity and excels above and beyond requirements
 
 8. Provide a brief justification (1-2 sentences) for selecting that category.
-I followed along with all the video tutorials and completed those assignments in full. My API is fully functioning and returns a response with data that matches what the frontend is trying to consume.
+I followed along with all the video tutorials and completed those assignments in full. My API is fully functioning and returns a response with data that matches what the frontend is trying to consume. I also made sure to organize my code with routes and controllers, even though it was a simple API, to practice writing code in an organized way that allows for scalability.
