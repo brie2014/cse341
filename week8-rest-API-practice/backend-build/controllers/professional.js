@@ -1,4 +1,4 @@
-const base64Image = require('./assets/images/professionalImageBase64')
+const base64Image = require('../assets/images/professionalImageBase64')
 
 exports.getProfessional = (req, res, next) => {
     res.status(200).json({
