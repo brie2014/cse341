@@ -1,0 +1,3 @@
+# Sends request for professional data to endpoint 
+# and returns professional information about Dwight Schrute
+GET http://localhost:8080/professional
