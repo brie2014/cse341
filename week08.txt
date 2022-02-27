@@ -1,0 +1,33 @@
+After completing the assignment, be sure to push to Github and Heroku.
+Please answer the questions in this text file and submit it to I-Learn.
+
+1. Copy and paste the URL for your web application (e.g., Heroku):
+N/A
+
+2. Copy and paste the URL for your source code repository (e.g., GitHub):
+Professional Backend API: https://github.com/brie2014/professional-api
+Main: https://github.com/brie2014/cse341
+
+3. Briefly list and describe the elements of the application that are functioning.
+-REST API created using routes and controllers to allow for more complexity if needed
+-REST API returns data
+-Data is properly consumed by frontend 
+
+4. Briefly describe any pieces of the assignment that are not yet working correctly.
+It is all working. 
+
+5. Briefly describe the "coolest" thing you learned while completing this assignment.
+The coolest thing I learned with this project was how simple API's really are. I didn't really know how they were made before this lesson, and now I feel comfortable diving in deeper to build a backend. I really enjoyed this assignment and I'm even more excited to work on our final project.
+
+6. If you could change this assignment to be more effective or helpful, what would you change?
+This assignment was a great way to apply our learnings for the week. My only complaint was I wish the frontend was styled better, but that isn't really relevant to the lesson.
+
+7. Please select the category you feel best describes your assignment: 5
+   1 - Some attempt was made
+   2 - Developing, but significantly deficient
+   3 - Slightly deficient, but still mostly adequate
+   4 - Meets requirements
+   5 - Shows creativity and excels above and beyond requirements
+
+8. Provide a brief justification (1-2 sentences) for selecting that category.
+I followed along with all the video tutorials and completed those assignments in full. My API is fully functioning and returns a response with data that matches what the frontend is trying to consume.
